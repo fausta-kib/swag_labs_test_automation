@@ -100,7 +100,7 @@ public class LoginStepDefinitions {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5));
         wait.until(ExpectedConditions.urlToBe(PageConstants.INVENTORY_PAGE));
 
-        List<WebElement> elements = driver.findElements(By.xpath(LoginConstants.APP_LOGO));
+        List<WebElement> elements = driver.findElements(By.xpath(InventoryConstants.APP_LOGO));
         Assertions.assertFalse(elements.isEmpty());
     }
 
