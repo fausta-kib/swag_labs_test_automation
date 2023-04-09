@@ -61,7 +61,7 @@ public class InventoryStepDefinitions {
         Assertions.assertTrue(card.isEmpty());
     }
 
-    @Given("the default product sort option is {string}")
+    @And("the default product sort option is {string}")
     public void sortedByValueIs(String sortedBySelection) {
         WebElement sorting = driver.findElement(By.xpath(InventoryConstants.ACTIVE_SORT_VALUE));
         String getSortText = sorting.getText();
@@ -81,29 +81,6 @@ public class InventoryStepDefinitions {
         }
         List<String> expectedSortedList = new ArrayList<>(actualNames);
         Collections.sort(expectedSortedList);
-        boolean result = expectedSortedList.equals(actualNames);
-        if (!result) {
-            throw new RuntimeException("List is not sorted");
-        }
-    }
-
-    @Then("products will be sorted by {string}")
-    public void productsWillBeSortedBy(String productsSortedByValue) {
-        List<WebElement> actualWebElements = driver.findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
-        List<String> actualNames = new ArrayList<>();
-        for (WebElement webElement : actualWebElements) {
-            String name = webElement.getText();
-            actualNames.add(name);
-        }
-        List<String> expectedSortedList = new ArrayList<>(actualNames);
-
-        if (productsSortedByValue.equals("Name (Z to A)")) {
-            Comparator<String> reverseComparator = Comparator.reverseOrder();
-            expectedSortedList.sort(reverseComparator);
-        } else {
-            Collections.sort(expectedSortedList);
-        }
-
         boolean result = expectedSortedList.equals(actualNames);
         if (!result) {
             throw new RuntimeException("List is not sorted");
@@ -140,7 +117,45 @@ public class InventoryStepDefinitions {
         }
     }
 
-    @Then("a user products will be sorted by {string}")
+    @And("a user adds the {string} product to the cart")
+    public void productsOnTheCard(String productNumOfCard) {
+        List<WebElement> actualWebElements = driver.findElements(By.xpath(InventoryConstants.ADD_TO_CARD_BUTTON));
+        if (productNumOfCard.equals("first")) {
+            actualWebElements.get(0).click();
+        } else if (productNumOfCard.equals("second")) {
+            actualWebElements.get(1).click();
+        }
+    }
+
+    @And("a user removes the first product from the cart")
+    public void aUserRemovesTheProductFromTheCart() {
+        List<WebElement> actualWebElements = driver.findElements(By.xpath(InventoryConstants.REMOVE_BUTTON));
+        actualWebElements.get(0).click();
+    }
+
+    @Then("products will be sorted by {string}")
+    public void productsWillBeSortedBy(String productsSortedByValue) {
+        List<WebElement> actualWebElements = driver.findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
+        List<String> actualNames = new ArrayList<>();
+        for (WebElement webElement : actualWebElements) {
+            String name = webElement.getText();
+            actualNames.add(name);
+        }
+        List<String> expectedSortedList = new ArrayList<>(actualNames);
+
+        if (productsSortedByValue.equals("Name (Z to A)")) {
+            Comparator<String> reverseComparator = Comparator.reverseOrder();
+            expectedSortedList.sort(reverseComparator);
+        } else {
+            Collections.sort(expectedSortedList);
+        }
+        boolean result = expectedSortedList.equals(actualNames);
+        if (!result) {
+            throw new RuntimeException("List is not sorted");
+        }
+    }
+
+    @And("a user products will be sorted by {string}")
     public void aUserProductsWillBeSortedBy(String productsSortedByPrice) {
         List<WebElement> actualWebElements = driver.findElements(By.xpath(InventoryConstants.INVENTORY_PRICE));
         List<BigDecimal> actualPrices = new ArrayList<>();
@@ -162,6 +177,19 @@ public class InventoryStepDefinitions {
         boolean result = expectedSortedList.equals(actualPrices);
         if (!result) {
             throw new RuntimeException("List is not sorted");
+        }
+    }
+
+    @And("a shopping cart icon should display the number {int}")
+    public void userCardNumberCount(int numberCountOfProducts) {
+        List<WebElement> card = driver.findElements(By.xpath(InventoryConstants.SHOPPING_CART));
+        if (!card.isEmpty()) {
+            WebElement firstElement = card.get(0);
+            String getNumber = firstElement.getText();
+            int cardNumberValue = Integer.parseInt(getNumber);
+            Assertions.assertEquals(cardNumberValue, numberCountOfProducts);
+        } else {
+            Assertions.fail("The card number does not match the expected value");
         }
     }
 
