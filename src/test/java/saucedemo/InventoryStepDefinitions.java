@@ -1,21 +1,15 @@
 package saucedemo;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,45 +17,38 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class InventoryStepDefinitions {
-    private WebDriver driver;
+import static saucedemo.WebDriverProvider.getDriver;
 
-    @Before
-    public void setUpDriver() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-fullscreen");
-        driver = new ChromeDriver(options);
-    }
+public class InventoryStepDefinitions {
 
     @Given("a user successfully logs into the application with {string} username and {string} password")
     public void aUserSuccessfullyIsLoggedToApplicationWithUsernameAndPassword(String userNameValue, String passwordValue) {
-        driver.get(PageConstants.LOG_IN_PAGE);
-        driver.findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME)).sendKeys(userNameValue);
-        driver.findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD)).sendKeys(passwordValue);
-        driver.findElement(By.xpath(LoginConstants.LOGIN_BUTTON)).click();
+        getDriver().get(PageConstants.LOG_IN_PAGE);
+        getDriver().findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME)).sendKeys(userNameValue);
+        getDriver().findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD)).sendKeys(passwordValue);
+        getDriver().findElement(By.xpath(LoginConstants.LOGIN_BUTTON)).click();
     }
 
     @And("a user is redirected to the inventory page")
     public void aUserWillBeRedirectedToTheXPage() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
         wait.until(ExpectedConditions.urlToBe(PageConstants.INVENTORY_PAGE));
-        Assertions.assertFalse(driver.findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty());
+        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty());
     }
 
     @And("a user's shopping cart is empty")
     public void andShoppingCardIsEmpty() {
-        Assertions.assertTrue(driver.findElements(By.xpath(InventoryConstants.SHOPPING_CART)).isEmpty());
+        Assertions.assertTrue(getDriver().findElements(By.xpath(InventoryConstants.SHOPPING_CART)).isEmpty());
     }
 
     @And("the default product sort option is {string}")
     public void sortedByValueIs(String sortedBySelection) {
-        Assertions.assertEquals(driver.findElement(By.xpath(InventoryConstants.ACTIVE_SORT_VALUE)).getText(), sortedBySelection);
+        Assertions.assertEquals(getDriver().findElement(By.xpath(InventoryConstants.ACTIVE_SORT_VALUE)).getText(), sortedBySelection);
     }
 
     @And("products are currently sorted by \"Name A to Z\"")
     public void productsByDefaultWillBeSortedBy() {
-        List<WebElement> actualWebElements = driver.findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
+        List<WebElement> actualWebElements = getDriver().findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
         List<String> actualNames = new ArrayList<>();
         for (WebElement webElement : actualWebElements) {
             actualNames.add(webElement.getText());
@@ -73,46 +60,50 @@ public class InventoryStepDefinitions {
 
     @When("a user selects {string} from the product sort options")
     public void userSelectsSortOption(String sortOption) {
-        WebElement productsSortedBy = driver.findElement(By.xpath(InventoryConstants.PRODUCTS_ARE_SORTED_BY));
+        WebElement productsSortedBy = getDriver().findElement(By.xpath(InventoryConstants.PRODUCTS_ARE_SORTED_BY));
         productsSortedBy.click();
 
         switch (sortOption) {
             case "Price (low to high)":
-                driver.findElement(By.xpath(InventoryConstants.LOW_TO_HIGH)).click();
+                getDriver().findElement(By.xpath(InventoryConstants.LOW_TO_HIGH)).click();
                 break;
             case "Price (high to low)":
-                driver.findElement(By.xpath(InventoryConstants.HIGH_TO_LOW)).click();
+                getDriver().findElement(By.xpath(InventoryConstants.HIGH_TO_LOW)).click();
                 break;
             default:
-                driver.findElement(By.xpath(InventoryConstants.NAME_Z_TO_A)).click();
+                getDriver().findElement(By.xpath(InventoryConstants.NAME_Z_TO_A)).click();
                 break;
         }
 
-        WebElement sorting = driver.findElement(By.xpath(InventoryConstants.ACTIVE_SORT_VALUE));
+        WebElement sorting = getDriver().findElement(By.xpath(InventoryConstants.ACTIVE_SORT_VALUE));
         String actualSortText = sorting.getText();
         Assertions.assertEquals(sortOption, actualSortText, "Expected sort option text is not equal to the actual sort option text");
     }
 
     @And("a user adds the {string} product to the cart")
     public void userAddsProductToCart(String productNumber) {
-        List<WebElement> addToCartButtons = driver.findElements(By.xpath(InventoryConstants.ADD_TO_CARD_BUTTON));
+        List<WebElement> addToCartButtons = getDriver().findElements(By.xpath(InventoryConstants.ADD_TO_CARD_BUTTON));
 
         if (productNumber.equals("first")) {
             addToCartButtons.get(0).click();
         } else if (productNumber.equals("second")) {
             addToCartButtons.get(1).click();
+        } else if (productNumber.equals("third")){
+            addToCartButtons.get(2).click();
+        } else {
+            Assertions.fail("Product wasn't added successfully to the cart");
         }
     }
 
     @And("a user removes the first product from the cart")
     public void userRemovesFirstProductFromCart() {
-        List<WebElement> removeButtons = driver.findElements(By.xpath(InventoryConstants.REMOVE_BUTTON));
+        List<WebElement> removeButtons = getDriver().findElements(By.xpath(InventoryConstants.REMOVE_BUTTON));
         removeButtons.get(0).click();
     }
 
     @Then("products will be sorted by {string}")
     public void productsWillBeSortedByName(String expectedSortOption) {
-        List<WebElement> inventoryNameElements = driver.findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
+        List<WebElement> inventoryNameElements = getDriver().findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
         List<String> actualNames = new ArrayList<>();
 
         for (WebElement element : inventoryNameElements) {
@@ -132,7 +123,7 @@ public class InventoryStepDefinitions {
 
     @And("a user products will be sorted by {string}")
     public void userProductsWillBeSortedByPrice(String expectedSortOption) {
-        List<WebElement> inventoryPriceElements = driver.findElements(By.xpath(InventoryConstants.INVENTORY_PRICE));
+        List<WebElement> inventoryPriceElements = getDriver().findElements(By.xpath(InventoryConstants.INVENTORY_PRICE));
         List<BigDecimal> actualPrices = new ArrayList<>();
 
         for (WebElement element : inventoryPriceElements) {
@@ -154,23 +145,10 @@ public class InventoryStepDefinitions {
         Assertions.assertEquals(expectedSortedList, actualPrices, "Inventory prices are not sorted as expected");
     }
 
-    @And("a shopping cart icon should display the number {int}")
+    @And("a shopping cart icon displays the number {int}")
     public void verifyCartNumberCount(int expectedCount) {
-        WebElement cartIcon = driver.findElement(By.xpath(InventoryConstants.SHOPPING_CART));
+        WebElement cartIcon = getDriver().findElement(By.xpath(InventoryConstants.SHOPPING_CART));
         int actualCount = Integer.parseInt(cartIcon.getText().trim());
-
         Assertions.assertEquals(expectedCount, actualCount, "Cart number count is not as expected.");
-    }
-
-    @After
-    public void tearDown(Scenario scenario) throws IOException {
-        if (scenario.isFailed()) {
-            // Take screenshot on failure
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "failure-screenshot");
-        }
-
-        // Close the browser
-        driver.quit();
     }
 }
