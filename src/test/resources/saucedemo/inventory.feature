@@ -36,3 +36,10 @@ Feature: Test SwagLabs inventory page functionality
     Then a shopping cart icon displays the number 2
     When a user removes the first product from the cart
     Then a shopping cart icon displays the number 1
+
+  Scenario: Verify product page redirection and back to the inventory page redirection
+    Given a user adds product by name "Sauce Labs Backpack"
+    When a user clicks on the "Sauce Labs Backpack" product title
+    Then a user will be redirected to the "Sauce Labs Backpack" product page
+    When a user clicks on the Back to products button
+    Then a user is redirected to the inventory page

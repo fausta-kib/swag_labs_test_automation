@@ -38,7 +38,7 @@ Feature: Verify SwagLabs Shopping Cart Page
     When a user clicks on the "Checkout" button
     Then a user will be redirected to the checkout page
 
-    Scenario: Verify item page redirection
+    Scenario: Verify product page redirection
       Given a user adds product by name "Sauce Labs Backpack"
         And a user clicks on the shopping card icon
         And a user is redirected to the shopping card page

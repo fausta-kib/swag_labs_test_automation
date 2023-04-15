@@ -88,7 +88,7 @@ public class InventoryStepDefinitions {
             addToCartButtons.get(0).click();
         } else if (productNumber.equals("second")) {
             addToCartButtons.get(1).click();
-        } else if (productNumber.equals("third")){
+        } else if (productNumber.equals("third")) {
             addToCartButtons.get(2).click();
         } else {
             Assertions.fail("Product wasn't added successfully to the cart");
@@ -99,6 +99,12 @@ public class InventoryStepDefinitions {
     public void userRemovesFirstProductFromCart() {
         List<WebElement> removeButtons = getDriver().findElements(By.xpath(InventoryConstants.REMOVE_BUTTON));
         removeButtons.get(0).click();
+    }
+
+    @When("a user clicks on the Back to products button")
+    public void aUserClicksOnTheBackToProductsButton() {
+        WebElement backToProductsButton = getDriver().findElement(By.xpath("//button[@id='back-to-products']"));
+        backToProductsButton.click();
     }
 
     @Then("products will be sorted by {string}")
