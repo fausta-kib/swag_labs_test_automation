@@ -7,31 +7,31 @@ Feature: Verify SwagLabs Checkout Pages
       And a user is redirected to the shopping card page
       And a user clicks on the "Checkout" button
 
-    Scenario: "Your information" form is empty
-      Given a user is redirected to the checkout one page
+    Scenario: Empty "Your Information" form
+      Given a user is redirected to the checkout your information page
       When a user clicks the "Continue" button
       Then an error message "First Name is required" will appear for a user
 
-    Scenario: User inputs only first name in the "Your information" form
-      Given a user is redirected to the checkout one page
+    Scenario: First name only in "Your Information" form
+      Given a user is redirected to the checkout your information page
       When a user inputs "Pokis" first name value
         And a user clicks the "Continue" button
       Then an error message "Last Name is required" will appear for a user
 
-    Scenario: User inputs only first name and last name in the "Your information" form
-      Given a user is redirected to the checkout one page
+    Scenario: First name and last name in "Your Information" form
+      Given a user is redirected to the checkout your information page
       When a user inputs "Pokis" first name value
         And a user inputs "Pokovicius" last name value
         And a user clicks the "Continue" button
       Then an error message "Postal Code is required" will appear for a user
 
-    Scenario: Your information form will be canceled
-      Given a user is redirected to the checkout one page
+    Scenario: Cancel "Your Information" form
+      Given a user is redirected to the checkout your information page
       When a user clicks the "Cancel" button
       Then a user is redirected to the shopping card page
 
-    Scenario: Your information form will be inputted successfully, but overview page will be canceled
-      Given a user is redirected to the checkout one page
+    Scenario: Canceling "Overview" page after successfully entering "Your Information" form
+      Given a user is redirected to the checkout your information page
         And a user inputs "Pokis" first name value
         And a user inputs "Pokovicius" last name value
         And a user inputs "12345" zip code value
@@ -40,8 +40,8 @@ Feature: Verify SwagLabs Checkout Pages
       When a user clicks the "Cancel" button
       Given a user is redirected to the inventory page
 
-    Scenario: Your information form will be inputted successfully
-      Given a user is redirected to the checkout one page
+    Scenario: Successful "Your Information" form input and order completion
+      Given a user is redirected to the checkout your information page
         And a user inputs "Pokis" first name value
         And a user inputs "Pokovicius" last name value
         And a user inputs "12345" zip code value
