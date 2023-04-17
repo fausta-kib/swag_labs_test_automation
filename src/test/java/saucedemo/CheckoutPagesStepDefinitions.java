@@ -1,34 +1,15 @@
 package saucedemo;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 import static saucedemo.WebDriverProvider.getDriver;
 
 public class CheckoutPagesStepDefinitions {
-
-    @Given("a user is redirected to the checkout your information page")
-    public void userIsRedirectedToCheckoutYourInformationPage() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.CHECKOUT_STEP_ONE_PAGE));
-        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty(), "Logo not found");
-    }
-
-    @Given("a user is redirected to the checkout complete page")
-    public void userIsRedirectedToCheckOutCompletePage() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.CHECKOUT_COMPLETE_PAGE));
-        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty(), "Logo not found");
-    }
 
     @And("a user inputs {string} zip code value")
     public void userInputsZipCodeValue(String zipCodeValue) {
@@ -92,12 +73,5 @@ public class CheckoutPagesStepDefinitions {
         if (!equalTexts) {
             throw new RuntimeException("Expected error message is not the same as actual error message");
         }
-    }
-
-    @Then("a user is redirected to the checkout overview page")
-    public void userIsRedirectedToOverviewPage() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.CHECKOUT_STEP_TWO_PAGE));
-        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty(), "Logo not found");
     }
 }

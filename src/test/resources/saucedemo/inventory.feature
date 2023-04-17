@@ -2,7 +2,7 @@ Feature: Test SwagLabs inventory page functionality
 
   Background:
     Given a user successfully logs into the application with "standard_user" username and "secret_sauce" password
-      And a user is redirected to the inventory page
+      And a user is redirected to the "inventory" page
 
   Scenario: Sort products by Name (A to Z)
     Given the default product sort option is "Name (A to Z)"
@@ -42,4 +42,23 @@ Feature: Test SwagLabs inventory page functionality
     When a user clicks on the "Sauce Labs Backpack" product title
     Then a user will be redirected to the "Sauce Labs Backpack" product page
     When a user clicks on the Back to products button
-    Then a user is redirected to the inventory page
+    Then a user is redirected to the "inventory" page
+
+  Scenario Outline: Verify menu functionality
+    Given menu "is" displayed
+      And a user clicks on the menu icon
+    When a user clicks on the "<menu_selection>" option
+    Then a user is redirected to the "<redirected_page>" page
+    Examples:
+      | menu_selection | redirected_page |
+      | All items      | inventory       |
+      | About          | about           |
+      | Logout         | login           |
+
+  Scenario: Verified "Reset App State" menu selection functionality
+    Given menu "is" displayed
+      And a user adds product by name "Sauce Labs Backpack"
+      And a shopping cart icon displays the number 1
+      And a user clicks on the menu icon
+    When a user clicks on the "Reset App State" option
+    Then a user's shopping cart is empty

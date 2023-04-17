@@ -7,10 +7,7 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -76,15 +73,6 @@ public class LoginStepDefinitions {
                 break;
         }
         assertTrue(getDriver().getTitle().contains("Swag Labs"));
-    }
-
-    @Then("a user should be redirected to the inventory page")
-    public void aUserWillBeRedirectedToTheXPage() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.INVENTORY_PAGE));
-
-        List<WebElement> elements = getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO));
-        Assertions.assertFalse(elements.isEmpty());
     }
 
     @Then("an error message {string} should be displayed to a user")
@@ -157,4 +145,3 @@ public class LoginStepDefinitions {
         Assertions.assertFalse(elements.isEmpty());
     }
 }
-

@@ -7,10 +7,7 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
 import static saucedemo.WebDriverProvider.getDriver;
@@ -21,13 +18,6 @@ public class CartStepDefinitions {
     public void clickShoppingCartIcon() {
         WebElement cartButton = getDriver().findElement(By.xpath(CartConstants.SHOPPING_CART));
         cartButton.click();
-    }
-
-    @And("a user is redirected to the shopping card page")
-    public void verifyCartPageIsDisplayed() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.CART_PAGE));
-        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty());
     }
 
     @And("there are {int} products displayed in the cart")
@@ -96,13 +86,6 @@ public class CartStepDefinitions {
         }
     }
 
-    @Then("a user will be redirected to the checkout page")
-    public void userRedirectedToCheckoutPage() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.CHECKOUT_STEP_ONE_PAGE));
-        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty(), "Logo not found");
-    }
-
     @Then("a user will be redirected to the {string} product page")
     public void userRedirectedToProductPage(String expectedTitle) {
         String currentUrl = getDriver().getCurrentUrl();
@@ -113,4 +96,3 @@ public class CartStepDefinitions {
         Assertions.assertEquals(actualTitle, expectedTitle, "Expected title didn't match with actual title");
     }
 }
-

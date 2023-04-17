@@ -1,11 +1,14 @@
-Feature: SwagLabs page log in functionality
+Feature: Verify SwagLabs Log in Page
+
+  Background:
+    Given menu "is not" displayed
 
   Scenario Outline: Successful Login to SwagLabs with correct credentials
     Given a user is on the login page
     When a user inputs "<username>" username value
       And a user inputs "secret_sauce" password value
       And a user clicks on the Login button
-    Then a user should be redirected to the inventory page
+    Then a user is redirected to the "inventory" page
     Examples:
       | username                |
       | standard_user           |

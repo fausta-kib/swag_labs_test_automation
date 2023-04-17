@@ -7,11 +7,8 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,13 +24,6 @@ public class InventoryStepDefinitions {
         getDriver().findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME)).sendKeys(userNameValue);
         getDriver().findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD)).sendKeys(passwordValue);
         getDriver().findElement(By.xpath(LoginConstants.LOGIN_BUTTON)).click();
-    }
-
-    @And("a user is redirected to the inventory page")
-    public void aUserWillBeRedirectedToTheXPage() {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofMillis(5));
-        wait.until(ExpectedConditions.urlToBe(PageConstants.INVENTORY_PAGE));
-        Assertions.assertFalse(getDriver().findElements(By.xpath(InventoryConstants.APP_LOGO)).isEmpty());
     }
 
     @And("a user's shopping cart is empty")
