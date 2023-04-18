@@ -6,14 +6,14 @@ Feature: Verify SwagLabs Shopping Cart Page
       And a user's shopping cart is empty
 
   Scenario: Verify shopping cart is empty
-    Given a user clicks on the shopping card icon
+    Given a user clicks on the "Shopping card" button
       And a user is redirected to the "shopping cart" page
       And there are 0 products displayed in the cart
     When a user clicks on the "Checkout" button
     Then a user is redirected to the "checkout your information" page
 
   Scenario: Verify continue shopping button redirect to the inventory page
-    Given a user clicks on the shopping card icon
+    Given a user clicks on the "Shopping card" button
       And a user is redirected to the "shopping cart" page
     When a user clicks on the "Continue Shopping" button
     Then a user is redirected to the "inventory" page
@@ -22,7 +22,7 @@ Feature: Verify SwagLabs Shopping Cart Page
       Given a user adds the "first" product to the cart
         And a user adds the "second" product to the cart
         And a user adds the "third" product to the cart
-        And a user clicks on the shopping card icon
+        And a user clicks on the "Shopping card" button
         And a user is redirected to the "shopping cart" page
         And a shopping cart icon displays the number 3
         And there are 3 products displayed in the cart
@@ -33,21 +33,21 @@ Feature: Verify SwagLabs Shopping Cart Page
     Scenario: Verify checkout page redirection
     Given a user adds the "first" product to the cart
       And a user adds the "second" product to the cart
-      And a user clicks on the shopping card icon
+      And a user clicks on the "Shopping card" button
       And a user is redirected to the "shopping cart" page
     When a user clicks on the "Checkout" button
     Then a user is redirected to the "checkout your information" page
 
     Scenario: Verify product page redirection
       Given a user adds product by name "Sauce Labs Backpack"
-        And a user clicks on the shopping card icon
+        And a user clicks on the "Shopping card" button
         And a user is redirected to the "shopping cart" page
       When a user clicks on the "Sauce Labs Backpack" product title
       Then a user will be redirected to the "Sauce Labs Backpack" product page
 
     Scenario Outline: Verify menu functionality
-      Given menu "is" displayed
-        And a user clicks on the menu icon
+      Given the menu "is" displayed
+        And a user clicks on the "menu" button
       When a user clicks on the "<menu_selection>" option
       Then a user is redirected to the "<redirected_page>" page
       Examples:
@@ -57,9 +57,9 @@ Feature: Verify SwagLabs Shopping Cart Page
         | Logout         | login           |
 
     Scenario: Verified "Reset App State" menu selection functionality
-      Given menu "is" displayed
+      Given the menu "is" displayed
         And a user adds product by name "Sauce Labs Backpack"
         And a shopping cart icon displays the number 1
-        And a user clicks on the menu icon
+        And a user clicks on the "menu" button
       When a user clicks on the "Reset App State" option
       Then a user's shopping cart is empty

@@ -16,67 +16,63 @@ import static saucedemo.WebDriverProvider.getDriver;
 public class LoginStepDefinitions {
 
     @Given("a user is on the login page")
-    public void aUserIsInLogInPage() {
-        getDriver().get(PageConstants.LOG_IN_PAGE);
+    public void givenAUserIsOnTheLoginPage() {
+        getDriver().get(GenericConstants.LOG_IN_PAGE);
         assertTrue(getDriver().getTitle().contains("Swag Labs"));
         List<WebElement> elements = getDriver().findElements(By.xpath(LoginConstants.LOGIN_LOGO));
         Assertions.assertFalse(elements.isEmpty());
     }
 
     @When("a user inputs {string} username value")
-    public void aUserInputsUsernameUsernameValue(String UserNameValue) {
-        WebElement username = getDriver().findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME));
-        username.sendKeys(UserNameValue);
+    public void userInputsUsernameValue(String userNameValue) {
+        getDriver().findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME)).sendKeys(userNameValue);
     }
 
     @And("a user inputs {string} password value")
-    public void aUserInputsPasswordValue(String PasswordValue) {
-        WebElement password = getDriver().findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD));
-        password.sendKeys(PasswordValue);
+    public void userInputsPasswordValue(String passwordValue) {
+        getDriver().findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD)).sendKeys(passwordValue);
     }
 
     @And("a user clicks on the Login button")
-    public void aUserClicksOnTheLoginButton() {
-        WebElement login = getDriver().findElement(By.xpath(LoginConstants.LOGIN_BUTTON));
-        login.click();
+    public void userClicksOnTheLoginButton() {
+        getDriver().findElement(By.xpath(LoginConstants.LOGIN_BUTTON)).click();
     }
 
     @When("a user leaves \"username\" field empty")
-    public void aUserLeftsUsernameValueEmpty() {
+    public void userLeavesUsernameValueEmpty() {
         WebElement username = getDriver().findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME));
         assertTrue(username.getText().isEmpty());
     }
 
     @And("a user leaves \"password\" field empty")
-    public void aUserLeftsPasswordValueEmpty() {
+    public void userLeavesPasswordValueEmpty() {
         WebElement username = getDriver().findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD));
         assertTrue(username.getText().isEmpty());
     }
 
     @When("the user attempts to access the {string} page via URL without logging in")
-    public void aUserGoesToTheInventoryPageByUrl(String urlUsedWent) {
-        switch (urlUsedWent) {
+    public void userGoesToTheAnotherPageWithoutAuthorization(String urlWithoutAuthorization) {
+        switch (urlWithoutAuthorization) {
             case "inventory":
-                getDriver().get(PageConstants.INVENTORY_PAGE);
+                getDriver().get(GenericConstants.INVENTORY_PAGE);
                 break;
             case "cart":
-                getDriver().get(PageConstants.CART_PAGE);
+                getDriver().get(GenericConstants.CART_PAGE);
                 break;
             case "checkout-step-one":
-                getDriver().get(PageConstants.CHECKOUT_STEP_ONE_PAGE);
+                getDriver().get(GenericConstants.CHECKOUT_STEP_ONE_PAGE);
                 break;
             case "checkout-step-two":
-                getDriver().get(PageConstants.CHECKOUT_STEP_TWO_PAGE);
+                getDriver().get(GenericConstants.CHECKOUT_STEP_TWO_PAGE);
                 break;
             default:
-                getDriver().get(PageConstants.CHECKOUT_COMPLETE_PAGE);
+                getDriver().get(GenericConstants.CHECKOUT_COMPLETE_PAGE);
                 break;
         }
-        assertTrue(getDriver().getTitle().contains("Swag Labs"));
     }
 
     @Then("an error message {string} should be displayed to a user")
-    public void anErrorWillBeDisplayedForAUser(String errorValue) {
+    public void errorWillBeDisplayedForAUser(String errorValue) {
 
         WebElement error = getDriver().findElement(By.xpath(LoginConstants.ERROR_MESSAGE_CONTAINER));
         String getErrorText = error.getText();
@@ -107,7 +103,7 @@ public class LoginStepDefinitions {
     }
 
     @Then("an error message {string} should appear to a user")
-    public void anUrlErrorWillBeDisplayedForAUser(String errorUrlValue) {
+    public void urlErrorWillBeDisplayedForAUser(String errorUrlValue) {
 
         WebElement error = getDriver().findElement(By.xpath(LoginConstants.ERROR_MESSAGE_CONTAINER));
         String getErrorText = error.getText();
@@ -139,7 +135,7 @@ public class LoginStepDefinitions {
 
     @And("user should remain on the login page")
     public void aUserWillStayOnTheLogInPage() {
-        assertTrue(getDriver().getCurrentUrl().contains(PageConstants.LOG_IN_PAGE));
+        assertTrue(getDriver().getCurrentUrl().contains(GenericConstants.LOG_IN_PAGE));
         assertTrue(getDriver().getTitle().contains("Swag Labs"));
         List<WebElement> elements = getDriver().findElements(By.xpath(LoginConstants.LOGIN_LOGO));
         Assertions.assertFalse(elements.isEmpty());

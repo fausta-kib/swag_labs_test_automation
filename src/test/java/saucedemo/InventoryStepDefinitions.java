@@ -19,15 +19,15 @@ import static saucedemo.WebDriverProvider.getDriver;
 public class InventoryStepDefinitions {
 
     @Given("a user successfully logs into the application with {string} username and {string} password")
-    public void aUserSuccessfullyIsLoggedToApplicationWithUsernameAndPassword(String userNameValue, String passwordValue) {
-        getDriver().get(PageConstants.LOG_IN_PAGE);
+    public void userSuccessfullyIsLoggedToApplicationWithUsernameAndPassword(String userNameValue, String passwordValue) {
+        getDriver().get(GenericConstants.LOG_IN_PAGE);
         getDriver().findElement(By.xpath(LoginConstants.INPUT_ID_USER_NAME)).sendKeys(userNameValue);
         getDriver().findElement(By.xpath(LoginConstants.INPUT_TYPE_PASSWORD)).sendKeys(passwordValue);
         getDriver().findElement(By.xpath(LoginConstants.LOGIN_BUTTON)).click();
     }
 
     @And("a user's shopping cart is empty")
-    public void andShoppingCardIsEmpty() {
+    public void shoppingCardIsEmpty() {
         Assertions.assertTrue(getDriver().findElements(By.xpath(InventoryConstants.SHOPPING_CART)).isEmpty());
     }
 
@@ -50,8 +50,7 @@ public class InventoryStepDefinitions {
 
     @When("a user selects {string} from the product sort options")
     public void userSelectsSortOption(String sortOption) {
-        WebElement productsSortedBy = getDriver().findElement(By.xpath(InventoryConstants.PRODUCTS_ARE_SORTED_BY));
-        productsSortedBy.click();
+        getDriver().findElement(By.xpath(InventoryConstants.PRODUCTS_ARE_SORTED_BY)).click();
 
         switch (sortOption) {
             case "Price (low to high)":
@@ -91,12 +90,6 @@ public class InventoryStepDefinitions {
         removeButtons.get(0).click();
     }
 
-    @When("a user clicks on the Back to products button")
-    public void aUserClicksOnTheBackToProductsButton() {
-        WebElement backToProductsButton = getDriver().findElement(By.xpath("//button[@id='back-to-products']"));
-        backToProductsButton.click();
-    }
-
     @Then("products will be sorted by {string}")
     public void productsWillBeSortedByName(String expectedSortOption) {
         List<WebElement> inventoryNameElements = getDriver().findElements(By.xpath(InventoryConstants.INVENTORY_NAME));
@@ -118,7 +111,7 @@ public class InventoryStepDefinitions {
     }
 
     @And("a user products will be sorted by {string}")
-    public void userProductsWillBeSortedByPrice(String expectedSortOption) {
+    public void userProductsWillBeSortedBy (String expectedSortOption) {
         List<WebElement> inventoryPriceElements = getDriver().findElements(By.xpath(InventoryConstants.INVENTORY_PRICE));
         List<BigDecimal> actualPrices = new ArrayList<>();
 

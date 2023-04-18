@@ -1,10 +1,11 @@
 Feature: Verify SwagLabs Log in Page
 
   Background:
-    Given menu "is not" displayed
-
-  Scenario Outline: Successful Login to SwagLabs with correct credentials
     Given a user is on the login page
+      And the menu "is not" displayed
+      And the footer "is not" displayed
+
+  Scenario Outline: Successful Login with Correct Credentials
     When a user inputs "<username>" username value
       And a user inputs "secret_sauce" password value
       And a user clicks on the Login button
@@ -16,7 +17,6 @@ Feature: Verify SwagLabs Log in Page
       | performance_glitch_user |
 
   Scenario: Unsuccessful login attempt with locked out user credentials
-    Given a user is on the login page
     When a user inputs "locked_out_user" username value
       And a user inputs "secret_sauce" password value
       And a user clicks on the Login button
@@ -24,7 +24,6 @@ Feature: Verify SwagLabs Log in Page
       And user should remain on the login page
 
   Scenario: Unsuccessful login attempt with non-existing user credentials
-    Given a user is on the login page
     When a user inputs "non_existing_username" username value
       And a user inputs "non_existing_password" password value
       And a user clicks on the Login button
@@ -32,7 +31,6 @@ Feature: Verify SwagLabs Log in Page
       And user should remain on the login page
 
   Scenario Outline: Access to other application pages requires login
-    Given a user is on the login page
     When the user attempts to access the "<page>" page via URL without logging in
     Then an error message "<error>" should appear to a user
       And user should remain on the login page
@@ -46,7 +44,6 @@ Feature: Verify SwagLabs Log in Page
       | checkout-complete | You can only access '/checkout-complete.html' when you are logged in  |
 
   Scenario: Empty credentials are not allowed
-    Given a user is on the login page
     When a user leaves "username" field empty
       And a user leaves "password" field empty
       And a user clicks on the Login button
@@ -54,7 +51,6 @@ Feature: Verify SwagLabs Log in Page
       And user should remain on the login page
 
   Scenario: Empty username value isn't allowed
-    Given a user is on the login page
     When a user leaves "username" field empty
       And a user inputs "secret_sauce" password value
       And a user clicks on the Login button
@@ -62,7 +58,6 @@ Feature: Verify SwagLabs Log in Page
       And user should remain on the login page
 
   Scenario: Empty password value isn't allowed
-    Given a user is on the login page
     When a user inputs "standard_user" username value
       And a user leaves "password" field empty
       And a user clicks on the Login button

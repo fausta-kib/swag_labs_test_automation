@@ -1,4 +1,4 @@
-Feature: Test SwagLabs inventory page functionality
+Feature: Verify SwagLabs Inventory Page
 
   Background:
     Given a user successfully logs into the application with "standard_user" username and "secret_sauce" password
@@ -41,12 +41,12 @@ Feature: Test SwagLabs inventory page functionality
     Given a user adds product by name "Sauce Labs Backpack"
     When a user clicks on the "Sauce Labs Backpack" product title
     Then a user will be redirected to the "Sauce Labs Backpack" product page
-    When a user clicks on the Back to products button
+    When a user clicks on the "Back to products" button
     Then a user is redirected to the "inventory" page
 
   Scenario Outline: Verify menu functionality
-    Given menu "is" displayed
-      And a user clicks on the menu icon
+    Given the menu "is" displayed
+      And a user clicks on the "menu" button
     When a user clicks on the "<menu_selection>" option
     Then a user is redirected to the "<redirected_page>" page
     Examples:
@@ -56,9 +56,19 @@ Feature: Test SwagLabs inventory page functionality
       | Logout         | login           |
 
   Scenario: Verified "Reset App State" menu selection functionality
-    Given menu "is" displayed
+    Given the menu "is" displayed
       And a user adds product by name "Sauce Labs Backpack"
       And a shopping cart icon displays the number 1
-      And a user clicks on the menu icon
+      And a user clicks on the "menu" button
     When a user clicks on the "Reset App State" option
     Then a user's shopping cart is empty
+
+  Scenario Outline: Verified footer social media redirections
+    Given the footer "is" displayed
+    When a user clicks on the "<social_media_selection>" button
+    Then a new "<social_media_selection>" browser tab will be opened
+    Examples:
+      | social_media_selection |
+      | Twitter                |
+      | Facebook               |
+      | LinkedIn               |

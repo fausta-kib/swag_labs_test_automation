@@ -7,26 +7,32 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.Set;
+
 import java.util.List;
 
 import static saucedemo.WebDriverProvider.getDriver;
 
 public class GenericStepDefinitions {
 
-    @And("menu {string} displayed")
-    public void menuIsDisplayed(String displayedStatus) {
-        List<WebElement> burgerMenu = getDriver().findElements(By.xpath(PageConstants.MENU));
-        if (displayedStatus.equals("is")) {
+    @And("the menu {string} displayed")
+    public void menuIsDisplayed(String menuStatus) {
+        List<WebElement> burgerMenu = getDriver().findElements(By.xpath(GenericConstants.MENU));
+        if (menuStatus.equals("is")) {
             Assertions.assertFalse(burgerMenu.isEmpty());
         } else {
             Assertions.assertTrue(burgerMenu.isEmpty());
         }
     }
 
-    @And("a user clicks on the menu icon")
-    public void aUserClicksOnTheMenuIcon() {
-        WebElement continueShoppingButton = getDriver().findElement(By.xpath(PageConstants.MENU));
-        continueShoppingButton.click();
+    @And("the footer {string} displayed")
+    public void footerIsDisplayed(String footerStatus) {
+        List<WebElement> burgerMenu = getDriver().findElements(By.xpath(GenericConstants.FOOTER));
+        if (footerStatus.equals("is")) {
+            Assertions.assertFalse(burgerMenu.isEmpty());
+        } else {
+            Assertions.assertTrue(burgerMenu.isEmpty());
+        }
     }
 
     @When("a user clicks on the {string} option")
@@ -34,19 +40,19 @@ public class GenericStepDefinitions {
         WebElement button = null;
         switch (menuSelection) {
             case "All items":
-                button = getDriver().findElement(By.xpath(PageConstants.ALL_ITEMS));
+                button = getDriver().findElement(By.xpath(GenericConstants.ALL_ITEMS));
                 break;
             case "About":
-                button = getDriver().findElement(By.xpath(PageConstants.ABOUT));
+                button = getDriver().findElement(By.xpath(GenericConstants.ABOUT));
                 break;
             case "Logout":
-                button = getDriver().findElement(By.xpath(PageConstants.LOGOUT));
+                button = getDriver().findElement(By.xpath(GenericConstants.LOGOUT));
                 break;
             case "Reset App State":
-                button = getDriver().findElement(By.xpath(PageConstants.RESET));
+                button = getDriver().findElement(By.xpath(GenericConstants.RESET));
                 break;
             case "X":
-                button = getDriver().findElement(By.xpath(PageConstants.X));
+                button = getDriver().findElement(By.xpath(GenericConstants.X));
                 break;
             default:
                 Assertions.fail("Button '" + menuSelection + "' wasn't found on the cart page");
@@ -58,32 +64,117 @@ public class GenericStepDefinitions {
     public void userRedirectedToCheckoutPage(String pageApp) {
         switch (pageApp) {
             case "login":
-                getDriver().get(PageConstants.LOG_IN_PAGE);
+                getDriver().get(GenericConstants.LOG_IN_PAGE);
                 break;
             case "inventory":
-                getDriver().get(PageConstants.INVENTORY_PAGE);
+                getDriver().get(GenericConstants.INVENTORY_PAGE);
                 break;
             case "product":
-                getDriver().get(PageConstants.PRODUCT_PAGE);
+                getDriver().get(GenericConstants.PRODUCT_PAGE);
                 break;
             case "shopping cart":
-                getDriver().get(PageConstants.CART_PAGE);
+                getDriver().get(GenericConstants.CART_PAGE);
                 break;
             case "checkout your information":
-                getDriver().get(PageConstants.CHECKOUT_STEP_ONE_PAGE);
+                getDriver().get(GenericConstants.CHECKOUT_STEP_ONE_PAGE);
                 break;
             case "checkout overview":
-                getDriver().get(PageConstants.CHECKOUT_STEP_TWO_PAGE);
+                getDriver().get(GenericConstants.CHECKOUT_STEP_TWO_PAGE);
                 break;
             case "checkout complete":
-                getDriver().get(PageConstants.CHECKOUT_COMPLETE_PAGE);
+                getDriver().get(GenericConstants.CHECKOUT_COMPLETE_PAGE);
                 break;
             case "about":
-                getDriver().get(PageConstants.ABOUT_PAGE);
+                getDriver().get(GenericConstants.ABOUT_PAGE);
                 break;
             default:
                 Assertions.fail("Page '" + pageApp + "' wasn't found");
                 break;
         }
     }
+
+    @When("a user clicks on the {string} button")
+    public void userClicksButton(String pagesButtons) {
+        WebElement button = null;
+        switch (pagesButtons) {
+            case "menu":
+                button = getDriver().findElement(By.xpath(GenericConstants.MENU));
+                break;
+            case "Continue":
+                button = getDriver().findElement(By.xpath(CheckoutConstants.CONTINUE_BUTTON));
+                break;
+            case "Cancel":
+                button = getDriver().findElement(By.xpath(CheckoutConstants.CANCEL_BUTTON));
+                break;
+            case "Finish":
+                button = getDriver().findElement(By.xpath(CheckoutConstants.FINISH_BUTTON));
+                break;
+            case "Back Home":
+                button = getDriver().findElement(By.xpath(CheckoutConstants.BACK_BUTTON));
+                break;
+            case "Continue Shopping":
+                button = getDriver().findElement(By.xpath(CartConstants.CONTINUE_BUTTON));
+                break;
+            case "Checkout":
+                button = getDriver().findElement(By.xpath(CartConstants.CHECKOUT_BUTTON));
+                break;
+            case "Remove":
+                button = getDriver().findElement(By.xpath(GenericConstants.REMOVE));
+                break;
+            case "Add to cart":
+                button = getDriver().findElement(By.xpath(GenericConstants.ADD_TO_CART));
+                break;
+            case "Back to products":
+                button = getDriver().findElement(By.xpath(GenericConstants.BACK_TO_PRODUCTS));
+                break;
+            case "Shopping card":
+                button = getDriver().findElement(By.xpath(CartConstants.SHOPPING_CART));
+                break;
+            case "Twitter":
+                button = getDriver().findElement(By.xpath(GenericConstants.TWITTER_BUTTON));
+                break;
+            case "Facebook":
+                button = getDriver().findElement(By.xpath(GenericConstants.FACEBOOK_BUTTON));
+                break;
+            case "LinkedIn":
+                button = getDriver().findElement(By.xpath(GenericConstants.LINKEDIN_BUTTON));
+                break;
+            default:
+                Assertions.fail("Button '" + pagesButtons + "' wasn't found on the cart page");
+        }
+        button.click();
+    }
+
+    @Then("a new {string} browser tab will be opened")
+    public void verifyNewTabOpenedWithExpectedUrl(String socialMediaSelection) {
+        WebElement button;
+        By expectedUrl;
+        switch (socialMediaSelection) {
+            case "Twitter":
+                button = getDriver().findElement(By.xpath(GenericConstants.TWITTER_BUTTON));
+                expectedUrl = By.xpath(GenericConstants.TWITTER);
+                break;
+            case "Facebook":
+                button = getDriver().findElement(By.xpath(GenericConstants.FACEBOOK_BUTTON));
+                expectedUrl = By.xpath(GenericConstants.FACEBOOK);
+                break;
+            case "LinkedIn":
+                button = getDriver().findElement(By.xpath(GenericConstants.LINKEDIN_BUTTON));
+                expectedUrl = By.xpath(GenericConstants.LINKEDIN);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid social media selection: " + socialMediaSelection);
+        }
+
+        button.click();
+        String currentWindowHandle = getDriver().getWindowHandle();
+        Set<String> windowHandles = getDriver().getWindowHandles();
+        windowHandles.remove(currentWindowHandle);
+        String newTabHandle = windowHandles.iterator().next();
+        getDriver().switchTo().window(newTabHandle);
+
+        By currentUrl = By.xpath(getDriver().getCurrentUrl());
+        Assertions.assertEquals(currentUrl, expectedUrl, "The URL of the new tab does not match the expected URL.");
+    }
 }
+

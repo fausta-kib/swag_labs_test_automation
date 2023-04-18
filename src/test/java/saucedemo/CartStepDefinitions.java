@@ -14,12 +14,6 @@ import static saucedemo.WebDriverProvider.getDriver;
 
 public class CartStepDefinitions {
 
-    @Given("a user clicks on the shopping card icon")
-    public void clickShoppingCartIcon() {
-        WebElement cartButton = getDriver().findElement(By.xpath(CartConstants.SHOPPING_CART));
-        cartButton.click();
-    }
-
     @And("there are {int} products displayed in the cart")
     public void verifyNumberOfProductsDisplayed(int numberOfItems) {
         List<WebElement> actualCardItemsCount = getDriver().findElements(By.xpath(CartConstants.CARD_ITEM));
@@ -44,19 +38,6 @@ public class CartStepDefinitions {
             removeButton.click();
         } else {
             Assertions.fail("Product '" + productName + "' wasn't found");
-        }
-    }
-
-    @When("a user clicks on the {string} button")
-    public void clickButton(String buttonType) {
-        if (buttonType.equals("Continue Shopping")) {
-            WebElement continueShoppingButton = getDriver().findElement(By.xpath(CartConstants.CONTINUE_BUTTON));
-            continueShoppingButton.click();
-        } else if (buttonType.equals("Checkout")) {
-            WebElement CheckoutButton = getDriver().findElement(By.xpath(CartConstants.CHECKOUT_BUTTON));
-            CheckoutButton.click();
-        } else {
-            Assertions.fail("Button '" + buttonType + "' wasn't found on the cart page");
         }
     }
 
@@ -89,7 +70,7 @@ public class CartStepDefinitions {
     @Then("a user will be redirected to the {string} product page")
     public void userRedirectedToProductPage(String expectedTitle) {
         String currentUrl = getDriver().getCurrentUrl();
-        Assertions.assertTrue(currentUrl.contains(PageConstants.PRODUCT_PAGE), "Expected URL does not match current URL");
+        Assertions.assertTrue(currentUrl.contains(GenericConstants.PRODUCT_PAGE), "Expected URL does not match current URL");
 
         WebElement productTitle = getDriver().findElement(By.xpath(CartConstants.ITEM_TITLE));
         String actualTitle = productTitle.getText().trim();
