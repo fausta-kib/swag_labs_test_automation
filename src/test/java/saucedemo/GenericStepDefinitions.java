@@ -6,7 +6,10 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.Set;
 
 import java.util.List;
@@ -57,7 +60,8 @@ public class GenericStepDefinitions {
             default:
                 Assertions.fail("Button '" + menuSelection + "' wasn't found on the cart page");
         }
-        button.click();
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(button)).click();
     }
 
     @Then("a user is redirected to the {string} page")
@@ -148,33 +152,29 @@ public class GenericStepDefinitions {
     @Then("a new {string} browser tab will be opened")
     public void verifyNewTabOpenedWithExpectedUrl(String socialMediaSelection) {
         WebElement button;
-        By expectedUrl;
+        String expectedUrl;
         switch (socialMediaSelection) {
             case "Twitter":
-                button = getDriver().findElement(By.xpath(GenericConstants.TWITTER_BUTTON));
-                expectedUrl = By.xpath(GenericConstants.TWITTER);
+                expectedUrl = GenericConstants.TWITTER;
                 break;
             case "Facebook":
-                button = getDriver().findElement(By.xpath(GenericConstants.FACEBOOK_BUTTON));
-                expectedUrl = By.xpath(GenericConstants.FACEBOOK);
+                expectedUrl = GenericConstants.FACEBOOK;
                 break;
             case "LinkedIn":
-                button = getDriver().findElement(By.xpath(GenericConstants.LINKEDIN_BUTTON));
-                expectedUrl = By.xpath(GenericConstants.LINKEDIN);
+                expectedUrl = GenericConstants.LINKEDIN;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid social media selection: " + socialMediaSelection);
         }
 
-        button.click();
         String currentWindowHandle = getDriver().getWindowHandle();
         Set<String> windowHandles = getDriver().getWindowHandles();
         windowHandles.remove(currentWindowHandle);
         String newTabHandle = windowHandles.iterator().next();
         getDriver().switchTo().window(newTabHandle);
 
-        By currentUrl = By.xpath(getDriver().getCurrentUrl());
-        Assertions.assertEquals(currentUrl, expectedUrl, "The URL of the new tab does not match the expected URL.");
+        String currentUrl = getDriver().getCurrentUrl();
+        Assertions.assertTrue(currentUrl.contains(expectedUrl), "The URL of the new tab does not match the expected URL.");
     }
 }
 

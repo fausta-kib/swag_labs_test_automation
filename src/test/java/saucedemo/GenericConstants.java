@@ -11,7 +11,7 @@ public class GenericConstants {
     public static final String ABOUT_PAGE = "https://saucelabs.com/";
     public static final String TWITTER = "https://twitter.com/saucelabs";
     public static final String FACEBOOK = "https://www.facebook.com/saucelabs";
-    public static final String LINKEDIN = "https://www.linkedin.com/authwall?trk=qf&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2Fsauce-labs%2F";
+    public static final String LINKEDIN = "https://www.linkedin.com/";
     public static final String TWITTER_BUTTON = "//li[@class='social_twitter']";
     public static final String FACEBOOK_BUTTON = "//li[@class='social_facebook']";
     public static final String LINKEDIN_BUTTON = "//li[@class='social_linkedin']";

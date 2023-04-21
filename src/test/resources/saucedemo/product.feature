@@ -36,7 +36,10 @@ Feature: Verify SwagLabs Product Page
     And there are 1 products displayed in the cart
 
   Scenario Outline: Verify menu functionality
-    Given the menu "is" displayed
+    Given a user adds product by name "Sauce Labs Backpack"
+      And a user clicks on the "Sauce Labs Backpack" product title
+      And a user will be redirected to the "Sauce Labs Backpack" product page
+      And the menu "is" displayed
       And a user clicks on the "menu" button
     When a user clicks on the "<menu_selection>" option
     Then a user is redirected to the "<redirected_page>" page
@@ -47,9 +50,23 @@ Feature: Verify SwagLabs Product Page
       | Logout         | login           |
 
   Scenario: Verified "Reset App State" menu selection functionality
-    Given the menu "is" displayed
-      And a user adds product by name "Sauce Labs Backpack"
+    Given a user adds product by name "Sauce Labs Backpack"
+      And a user clicks on the "Sauce Labs Backpack" product title
+      And a user will be redirected to the "Sauce Labs Backpack" product page
+      And the menu "is" displayed
       And a shopping cart icon displays the number 1
       And a user clicks on the "menu" button
     When a user clicks on the "Reset App State" option
     Then a user's shopping cart is empty
+
+  Scenario Outline: Verified footer social media redirections
+    Given a user clicks on the "Sauce Labs Backpack" product title
+    And a user will be redirected to the "Sauce Labs Backpack" product page
+    And the footer "is" displayed
+    When a user clicks on the "<social_media_selection>" button
+    Then a new "<social_media_selection>" browser tab will be opened
+    Examples:
+      | social_media_selection |
+      | Twitter                |
+      | Facebook               |
+      | LinkedIn               |

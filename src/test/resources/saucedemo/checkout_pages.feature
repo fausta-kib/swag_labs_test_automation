@@ -69,3 +69,13 @@ Feature: Verify SwagLabs Checkout Pages
         And a user clicks on the "menu" button
       When a user clicks on the "Reset App State" option
       Then a user's shopping cart is empty
+
+  Scenario Outline: Verified footer social media redirections
+      Given the footer "is" displayed
+      When a user clicks on the "<social_media_selection>" button
+      Then a new "<social_media_selection>" browser tab will be opened
+      Examples:
+      | social_media_selection |
+      | Twitter                |
+      | Facebook               |
+      | LinkedIn               |
